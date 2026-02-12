@@ -121,9 +121,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.addJsonObject
-import kotlinx.serialization.json.buildJsonArray
-import kotlinx.serialization.json.put
 import java.net.InetAddress
 import java.security.MessageDigest
 import java.security.cert.CertificateException
@@ -1336,9 +1333,8 @@ class MyViewModel(application: Application): AndroidViewModel(application) {
         Privilege.updateStatus()
     }
     val userRestrictions = MutableStateFlow(emptyMap<String, Boolean>())
-    @RequiresApi(24)
     fun getUserRestrictions() {
-        val bundle = DPM.getUserRestrictions(DAR)
+        val bundle = UM.userRestrictions
         userRestrictions.value = bundle.keySet().associateWith { bundle.getBoolean(it) }
     }
     fun setUserRestriction(name: String, state: Boolean): Boolean {
@@ -1349,6 +1345,7 @@ class MyViewModel(application: Application): AndroidViewModel(application) {
                 DPM.clearUserRestriction(DAR, name)
             }
             userRestrictions.update { it.plus(name to state) }
+            getUserRestrictions()
             ShortcutUtils.updateUserRestrictionShortcut(application, name, !state, true)
             true
         } catch (_: SecurityException) {
