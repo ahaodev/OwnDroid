@@ -365,6 +365,8 @@
     <string name="profile_max_time_out_desc">Personal apps will be suspended after the work profile is closed for this amount of time. 0 means no limit. </string>
     <string name="personal_app_suspended_because_timeout">Personal app suspended because of this: %1$s</string>
     <string name="intent_filter">Intent filter</string>
+    <string name="presets">Presets</string>
+    <string name="allow_file_sharing">Allow file sharing</string>
     <string name="direction">Direction</string>
     <string name="both_direction">Both direction</string>
     <string name="work_to_personal">Work to personal</string>

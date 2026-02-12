@@ -331,6 +331,8 @@
     <string name="profile_max_time_out_desc">工作资料处于关闭状态的时间达到该限制后会挂起个人应用，0为无限制</string>
     <string name="personal_app_suspended_because_timeout">个人应用已经因此挂起：%1$s</string>
     <string name="intent_filter">Intent过滤器</string>
+    <string name="presets">预设</string>
+    <string name="allow_file_sharing">允许分享文件</string>
     <string name="direction">方向</string>
     <string name="both_direction">双向</string>
     <string name="work_to_personal">工作到个人</string>

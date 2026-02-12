@@ -494,7 +494,11 @@ fun Home(vm: MyViewModel, onLock: () -> Unit) {
             )
         }
         composable<CrossProfileIntentFilter> {
-            CrossProfileIntentFilterScreen(vm::addCrossProfileIntentFilter, ::navigateUp)
+            CrossProfileIntentFilterScreen(
+                vm::addCrossProfileIntentFilter, vm::clearCrossProfileIntentFilters,
+                vm::importCrossProfileIntentFilters, vm::exportCrossProfileIntentFilters,
+                ::navigateUp
+            )
         }
         composable<DeleteWorkProfile> { DeleteWorkProfileScreen(vm::wipeData, ::navigateUp) }
 

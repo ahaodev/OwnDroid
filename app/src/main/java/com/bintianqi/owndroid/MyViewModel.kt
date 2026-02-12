@@ -73,7 +73,6 @@ import com.bintianqi.owndroid.dpm.DelegatedAdmin
 import com.bintianqi.owndroid.dpm.DeviceAdmin
 import com.bintianqi.owndroid.dpm.FrpPolicyInfo
 import com.bintianqi.owndroid.dpm.HardwareProperties
-import com.bintianqi.owndroid.dpm.IntentFilterDirection
 import com.bintianqi.owndroid.dpm.IntentFilterOptions
 import com.bintianqi.owndroid.dpm.IpMode
 import com.bintianqi.owndroid.dpm.KeyguardDisableConfig
@@ -1417,13 +1416,28 @@ class MyViewModel(application: Application): AndroidViewModel(application) {
         val filter = IntentFilter(options.action)
         if (options.category.isNotEmpty()) filter.addCategory(options.category)
         if (options.mimeType.isNotEmpty()) filter.addDataType(options.mimeType)
-        val flags = when(options.direction) {
-            IntentFilterDirection.ToManaged -> DevicePolicyManager.FLAG_PARENT_CAN_ACCESS_MANAGED
-            IntentFilterDirection.ToParent -> DevicePolicyManager.FLAG_MANAGED_CAN_ACCESS_PARENT
-            IntentFilterDirection.Both -> DevicePolicyManager.FLAG_PARENT_CAN_ACCESS_MANAGED or
-                    DevicePolicyManager.FLAG_MANAGED_CAN_ACCESS_PARENT
+        DPM.addCrossProfileIntentFilter(DAR, filter, options.direction)
+        myRepo.setCrossProfileIntentFilter(options)
+    }
+    fun clearCrossProfileIntentFilters() {
+        DPM.clearCrossProfileIntentFilters(DAR)
+        myRepo.deleteAllCrossProfileIntentFilters()
+    }
+    fun importCrossProfileIntentFilters(uri: Uri) {
+        val bytes = application.contentResolver.openInputStream(uri)!!.use {
+            it.readBytes().decodeToString()
         }
-        DPM.addCrossProfileIntentFilter(DAR, filter, flags)
+        val data = Json.decodeFromString<List<IntentFilterOptions>>(bytes)
+        data.forEach {
+            addCrossProfileIntentFilter(it)
+        }
+    }
+    fun exportCrossProfileIntentFilters(uri: Uri) {
+        val data = myRepo.getAllCrossProfileIntentFilters()
+        val bytes = Json.encodeToString(data).encodeToByteArray()
+        application.contentResolver.openOutputStream(uri)!!.use {
+            it.write(bytes)
+        }
     }
 
     val UM = application.getSystemService(Context.USER_SERVICE) as UserManager
