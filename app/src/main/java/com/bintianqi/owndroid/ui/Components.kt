@@ -423,7 +423,7 @@ fun PackageNameTextField(
                 Icon(Icons.AutoMirrored.Default.List, null)
             }
         },
-        isError = value.isNotEmpty() && !value.isValidPackageName,
+        isError = value.lines().filter { it.isNotEmpty() }.all { it.isValidPackageName },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii, imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions { fm.clearFocus() }
     )

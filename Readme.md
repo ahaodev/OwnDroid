@@ -51,11 +51,7 @@ Solutions:
 java.lang.IllegalStateException: Not allowed to set the device owner because there are already several users on the device
 ```
 
-Solutions:
-- Delete secondary users.
-
-> [!NOTE]
-> Some systems have features such as app cloning and children space, which are usually users.
+Solution: Delete secondary users, including work profile, private space and app cloning.
 
 ### Device owner is already set
 
@@ -90,6 +86,19 @@ user limit reached
 ```
 
 Samsung restricts Android's multiple users feature. There is currently no solution.
+
+### Create work profile
+
+On most devices, creating work profile is not allowed by the system when the device owner exist.
+Because the system add `no_add_managed_profile` user restriction when a device owner is set.
+Device owner can't modify user restrictions set by the system, but if your device is rooted, you can disable this restriction by executing the following commands in adb shell.
+
+```shell
+pm set-user-restriction no_add_user 0
+pm set-user-restriction no_add_managed_profile 0
+pm set-user-restriction no_add_private_profile 0
+pm set-user-restriction no_add_clone_profile 0
+```
 
 ## API
 

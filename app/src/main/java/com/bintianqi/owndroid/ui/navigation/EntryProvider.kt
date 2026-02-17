@@ -111,7 +111,7 @@ fun myEntryProvider(
         backstack += dest
     }
     fun navigateUp() {
-        backstack.removeLastOrNull()
+        if (backstack.size > 1) backstack.removeLastOrNull()
     }
     fun navigateToAppGroups() {
         navigate(Destination.ManageAppGroups)

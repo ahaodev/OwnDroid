@@ -51,11 +51,7 @@ java.lang.IllegalStateException: Not allowed to set the device owner because the
 java.lang.IllegalStateException: Not allowed to set the device owner because there are already several users on the device
 ```
 
-解决办法：
-- 删除次级用户。
-
-> [!NOTE]
-> 一些系统有应用克隆、儿童空间等功能，它们通常是用户。
+解决办法：删除其他用户，包括工作资料、私密空间和应用分身。
 
 ### Device owner 已存在
 
@@ -88,6 +84,19 @@ user limit reached
 ```
 
 三星限制了多用户功能，暂无解决办法。
+
+
+### 创建工作资料
+
+在大部分设备上，设置device owner后不能创建工作资料，因为系统在设置device owner时会添加`no_add_managed_profile`等用户限制。
+Device owner不能修改系统设置的用户限制，但如果你有root权限，你可以在adb shell中执行以下命令以关闭这个限制。
+
+```shell
+pm set-user-restriction no_add_user 0
+pm set-user-restriction no_add_managed_profile 0
+pm set-user-restriction no_add_private_profile 0
+pm set-user-restriction no_add_clone_profile 0
+```
 
 ## API
 

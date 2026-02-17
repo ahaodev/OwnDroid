@@ -179,7 +179,7 @@ fun registerPackageRemovedReceiver(
     ctx.registerReceiver(br, filter)
 }
 
-fun parsePackageNames(input: String) = input.split('\n').filter { it.isNotEmpty() }
+fun parsePackageNames(input: String) = input.lines().filter { it.isNotEmpty() }
 
 val getInstalledAppsFlags =
     if(Build.VERSION.SDK_INT >= 24) PackageManager.MATCH_DISABLED_COMPONENTS or PackageManager.MATCH_UNINSTALLED_PACKAGES else 0
