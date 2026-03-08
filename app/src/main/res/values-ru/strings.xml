@@ -160,7 +160,7 @@
     <string name="nearby_app_streaming">Политика потоковой передачи Nearby App</string>
     <string name="nearby_streaming_policy">Политика потоковой передачи Nearby</string>
     <string name="nearby_notification_streaming">Политика потоковой передачи уведомлений Nearby</string>
-    <string name="enable_if_secure_enough">Только для одной управляемой учетной записи</string>
+    <string name="enable_if_same_account">Только для одной управляемой учетной записи</string>
     <string name="lock_task_mode">Режим закрепления задачи</string>
     <string name="app_not_allowed">Приложение не разрешено</string>
     <string name="disable_all">Отключить все</string>
@@ -174,10 +174,10 @@
     <string name="ltf_block_activity_start_in_task">Блокировать запуск активности в задаче</string>
     <string name="ca_cert">CA-сертификат</string>
     <!--TODO: 4 strings-->
-    <string name="no_ca_cert">No user CA certificate installed</string>
-    <string name="parse_cert_failed">Failed to parse certificate</string>
+    <string name="no_ca_cert">Пользовательский сертификат CA не установлен</string>
+    <string name="parse_cert_failed">Не удалось обработать сертификат</string>
     <string name="export">Export</string>
-    <string name="select_ca_cert">Select a CA certificate</string>
+    <string name="select_ca_cert">Выберите сертификат CA</string>
     <string name="uninstall_all_user_ca_cert">Удалить все пользовательские CA-сертификаты</string>
     <string name="security_logging">Журнал безопасности</string> 
     <string name="pre_reboot_security_logs">Журналы безопасности перед перезагрузкой</string>
@@ -190,7 +190,7 @@
     <string name="wipe_work_profile_warning">Ваш рабочий профиль будет УДАЛЕН</string>
     <string name="encryption_status">Статус шифрования</string>
     <string name="frp_policy">Политика FRP</string>
-    <string name="frp_not_supported">Your device does not support FRP</string> <!--TODO-->
+    <string name="frp_not_supported">Устройство не поддерживает защиту от сброса (FRP)</string> <!--TODO-->
     <string name="enable_frp">Включить FRP</string>
     <string name="account_list_is">Список аккаунтов: </string>
 
@@ -198,8 +198,7 @@
     <string name="is_security_patch">Патч безопасности: %1$s</string>
     <string name="no_system_update">Нет системных обновлений</string>
     <string name="system_update_policy">Политика системных обновлений</string>
-    <string name="system_update_policy_automatic">Автоматически</string>
-    <string name="system_update_policy_install_windowed">Установить в окне</string>
+    <string name="system_update_policy_windowed">Установить в окне</string> <!--TODO-->
     <string name="system_update_policy_postpone">Отложить на 30 дней</string>
     <string name="start_time">Время начала</string>
     <string name="end_time">Время окончания</string>
@@ -531,6 +530,10 @@
     <string name="appearance">Оформление</string> 
 
     <!--TODO: app lock-->
+    <string name="minimum_length_4">Длина должна быть не менее 4-х символов</string>
+    <string name="allow_biometrics">Использовать биометрию</string>
+    <string name="lock_when_leaving">Блокировать при выходе</string>
+    <string name="app_lock">Блокировка приложения</string>
     <string name="security">Безопасность</string>
     <string name="clear_storage">Очистить хранилище</string>
     
