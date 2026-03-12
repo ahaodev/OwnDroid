@@ -16,8 +16,6 @@ import com.bintianqi.owndroid.feature.network.PreferentialNetworkViewModel
 import com.bintianqi.owndroid.feature.network.WifiViewModel
 import com.bintianqi.owndroid.feature.password.PasswordViewModel
 import com.bintianqi.owndroid.feature.privilege.DelegatedAdminsViewModel
-import com.bintianqi.owndroid.feature.privilege.DhizukuServerRepository
-import com.bintianqi.owndroid.feature.privilege.DhizukuServerViewModel
 import com.bintianqi.owndroid.feature.privilege.TransferOwnershipViewModel
 import com.bintianqi.owndroid.feature.privilege.WorkingModesViewModel
 import com.bintianqi.owndroid.feature.settings.MySettings
@@ -37,7 +35,6 @@ import com.bintianqi.owndroid.feature.users.UsersViewModel
 import com.bintianqi.owndroid.feature.work_profile.CrossProfileIntentFilterRepository
 import com.bintianqi.owndroid.feature.work_profile.CrossProfileIntentFilterViewModel
 import com.bintianqi.owndroid.feature.work_profile.WorkProfileViewModel
-import com.bintianqi.owndroid.utils.DhizukuError
 import com.bintianqi.owndroid.utils.PrivilegeStatus
 import com.bintianqi.owndroid.utils.ToastChannel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,10 +43,10 @@ import kotlin.reflect.KClass
 class MyViewModelFactory(
     val app: MyApplication, val ph: PrivilegeHelper,
     val sr: SettingsRepository, val nlRepo: NetworkLoggingRepository,
-    val dsRepo: DhizukuServerRepository, val slRepo: SecurityLoggingRepository,
+    val slRepo: SecurityLoggingRepository,
     val agRepo: AppGroupRepository, val cpifRepo: CrossProfileIntentFilterRepository,
     val agState: MutableStateFlow<List<AppGroup>>,
-    val de: MutableStateFlow<DhizukuError?>, val ps: MutableStateFlow<PrivilegeStatus>,
+    val ps: MutableStateFlow<PrivilegeStatus>,
     val ts: MutableStateFlow<MySettings.Theme>, val tc: ToastChannel
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -83,9 +80,6 @@ class MyViewModelFactory(
         }
         if (checkType(WorkingModesViewModel::class)) {
             return WorkingModesViewModel(app, ph, sr, ps, tc) as T
-        }
-        if (checkType(DhizukuServerViewModel::class)) {
-            return DhizukuServerViewModel(app, dsRepo, sr) as T
         }
 
         if (checkType(SecurityLoggingViewModel::class)) {

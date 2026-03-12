@@ -53,7 +53,6 @@ import com.bintianqi.owndroid.feature.password.ResetPasswordScreen
 import com.bintianqi.owndroid.feature.password.ResetPasswordTokenScreen
 import com.bintianqi.owndroid.feature.privilege.AddDelegatedAdminScreen
 import com.bintianqi.owndroid.feature.privilege.DelegatedAdminsScreen
-import com.bintianqi.owndroid.feature.privilege.DhizukuServerSettingsScreen
 import com.bintianqi.owndroid.feature.privilege.TransferOwnershipScreen
 import com.bintianqi.owndroid.feature.privilege.WorkModesScreen
 import com.bintianqi.owndroid.feature.settings.AboutScreen
@@ -148,10 +147,6 @@ fun myEntryProvider(
             navigateAndPopAll(Destination.WorkingModes(false))
         }, ::navigate)
     }
-    entry<Destination.DhizukuServerSettings> {
-        DhizukuServerSettingsScreen(viewModel(factory = container.viewModelFactory), ::navigateUp)
-    }
-
     entry<Destination.DelegatedAdmins> {
         DelegatedAdminsScreen(
             viewModel(factory = container.viewModelFactory), ::navigateUp, ::navigate

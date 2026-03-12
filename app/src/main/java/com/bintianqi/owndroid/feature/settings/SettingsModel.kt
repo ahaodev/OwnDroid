@@ -17,8 +17,6 @@ data class MySettings(
 ) {
     @Serializable
     data class Privilege(
-        var dhizuku: Boolean = false,
-        var dhizukuServer: Boolean = false,
         var managedProfileActivated: Boolean = false,
         var defaultAffiliationIdSet: Boolean = false,
     )

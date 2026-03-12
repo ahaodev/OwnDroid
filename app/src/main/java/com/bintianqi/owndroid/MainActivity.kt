@@ -11,7 +11,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,11 +21,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.DialogProperties
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -42,7 +41,6 @@ import com.bintianqi.owndroid.ui.navigation.myEntryProvider
 import com.bintianqi.owndroid.ui.navigation.rememberSharedViewModelStoreNavEntryDecorator
 import com.bintianqi.owndroid.ui.screen.AppLockDialog
 import com.bintianqi.owndroid.ui.theme.OwnDroidTheme
-import com.bintianqi.owndroid.utils.DhizukuError
 import com.bintianqi.owndroid.utils.popToast
 import com.bintianqi.owndroid.utils.registerPackageRemovedReceiver
 import com.bintianqi.owndroid.utils.viewModelFactory
@@ -92,7 +90,7 @@ class MainActivity : FragmentActivity() {
             }
         }
         setContent {
-            val dhizukuError by myApp.container.dhizukuErrorState.collectAsState()
+            val dhizukuError by remember { mutableStateOf<Any?>(null) }
             var appLockDialog by rememberSaveable { mutableStateOf(false) }
             val theme by myApp.container.themeState.collectAsState()
             OwnDroidTheme(theme) {
@@ -151,38 +149,7 @@ class MainActivity : FragmentActivity() {
                         lifecycleOwner.lifecycle.removeObserver(observer)
                     }
                 }
-                if (dhizukuError != null) DhizukuErrorDialog(dhizukuError!!) {
-                    myApp.container.dhizukuErrorState.value = null
-                    /*backstack += Destination.WorkingModes(false)
-                    repeat(backstack.size - 1) {
-                        backstack.removeFirstOrNull()
-                    }*/
-                }
             }
         }
     }
-}
-
-@Composable
-private fun DhizukuErrorDialog(error: DhizukuError, onClose: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = {},
-        confirmButton = {
-            TextButton(onClose) {
-                Text(stringResource(R.string.confirm))
-            }
-        },
-        title = { Text(stringResource(R.string.dhizuku)) },
-        text = {
-            val text = stringResource(
-                when (error) {
-                    DhizukuError.Init -> R.string.failed_to_init_dhizuku
-                    DhizukuError.Permission -> R.string.dhizuku_permission_not_granted
-                    else -> R.string.failed_to_init_dhizuku
-                }
-            )
-            Text(text)
-        },
-        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
-    )
 }

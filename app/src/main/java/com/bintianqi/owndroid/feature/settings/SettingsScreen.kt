@@ -142,7 +142,7 @@ fun SettingsScreen(
                     onNavigate(Destination.ApiSettings)
                 }
             }
-            if (privilege.device && !privilege.dhizuku) {
+            if (privilege.device) {
                 FunctionItem(R.string.notifications, icon = R.drawable.notifications_fill0) {
                     onNavigate(Destination.NotificationSettings)
                 }

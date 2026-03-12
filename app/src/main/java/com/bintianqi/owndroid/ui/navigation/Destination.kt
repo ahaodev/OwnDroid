@@ -11,7 +11,6 @@ sealed class Destination : NavKey {
     @Serializable object Home : Destination()
 
     @Serializable class WorkingModes(val canNavigateUp: Boolean) : Destination()
-    @Serializable object DhizukuServerSettings : Destination()
     @Serializable object DelegatedAdmins : Destination()
     @Serializable object DelegatedAdminDetails : Destination()
 

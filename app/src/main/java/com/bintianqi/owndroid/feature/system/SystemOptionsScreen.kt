@@ -106,7 +106,7 @@ fun SystemOptionsScreen(vm: SystemOptionsViewModel, onNavigateUp: () -> Unit) {
             R.string.stay_on_while_plugged_in, status.stayOnWhilePluggedIn,
             vm::setStayOnWhilePluggedIn, R.drawable.mobile_phone_fill0
         )
-        if (privilege.device && !privilege.dhizuku) {
+        if (privilege.device) {
             globalSettings.forEach {
                 SwitchItem(it.name, globalSettingsStatus[it.setting] ?: false, { state ->
                     vm.setGlobalSetting(it.setting, state)

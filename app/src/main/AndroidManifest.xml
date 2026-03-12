@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
-    <uses-sdk tools:overrideLibrary="rikka.shizuku.provider,rikka.shizuku.api,rikka.shizuku.shared,rikka.shizuku.aidl,com.rosan.dhizuku.server_api,com.rosan.dhizuku.api" />
     <uses-feature android:name="android.software.device_admin" />
     <application
         android:name=".MyApplication"
@@ -76,17 +75,6 @@
             android:permission="com.bintianqi.owndroid.MyPermission"
             android:theme="@android:style/Theme.NoDisplay" />
         <activity
-            android:name=".DhizukuActivity"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.Transparent">
-            <intent-filter>
-                <action android:name="com.bintianqi.owndroid.action.REQUEST_DHIZUKU_PERMISSION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".activity.CheckPolicyComplianceActivity"
             android:exported="true"
             android:theme="@style/Theme.Transparent">
@@ -136,18 +124,5 @@
             android:exported="false"
             android:foregroundServiceType="specialUse" />
 
-        <provider
-            android:name="rikka.shizuku.ShizukuProvider"
-            android:authorities="${applicationId}.shizuku"
-            android:enabled="true"
-            android:exported="true"
-            android:multiprocess="false"
-            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
-        <provider
-            android:name=".MyDhizukuProvider"
-            android:authorities="com.bintianqi.owndroid.dhizuku_server.provider"
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="true"></provider>
     </application>
 </manifest>

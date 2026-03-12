@@ -261,7 +261,7 @@ fun uninstallPackage(
     } else {
         PendingIntent.getBroadcast(application, 0, intent, PendingIntent.FLAG_MUTABLE).intentSender
     }
-    application.getPackageInstaller(privilegeHelper.dhizuku).uninstall(packageName, pi)
+    application.packageManager.packageInstaller.uninstall(packageName, pi)
 }
 
 fun viewModelFactory(build: () -> ViewModel) =

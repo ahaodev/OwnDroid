@@ -40,7 +40,7 @@ fun NetworkScreen(
 ) {
     val privilege by vm.ps.collectAsStateWithLifecycle()
     MyScaffold(R.string.network, onNavigateUp, 0.dp) {
-        if (!privilege.dhizuku) FunctionItem(R.string.wifi, icon = R.drawable.wifi_fill0) {
+        FunctionItem(R.string.wifi, icon = R.drawable.wifi_fill0) {
             onNavigate(Destination.WiFi)
         }
         if (VERSION.SDK_INT >= 30) {
@@ -48,8 +48,7 @@ fun NetworkScreen(
                 onNavigate(Destination.NetworkOptions)
             }
         }
-        if (!privilege.dhizuku)
-            FunctionItem(R.string.network_stats, icon = R.drawable.query_stats_fill0) {
+        FunctionItem(R.string.network_stats, icon = R.drawable.query_stats_fill0) {
                 onNavigate(Destination.NetworkStats)
             }
         if (VERSION.SDK_INT >= 29 && privilege.device) {
@@ -67,7 +66,7 @@ fun NetworkScreen(
                 onNavigate(Destination.RecommendedGlobalProxy)
             }
         }
-        if (VERSION.SDK_INT >= 26 && !privilege.dhizuku && (privilege.device || privilege.work)) {
+        if (VERSION.SDK_INT >= 26 && (privilege.device || privilege.work)) {
             FunctionItem(R.string.network_logging, icon = R.drawable.description_fill0) {
                 onNavigate(Destination.NetworkLogging)
             }

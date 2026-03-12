@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -129,7 +128,7 @@ fun WorkModesScreen(
                                     )
                                 }
                             )
-                            if (!privilege.dhizuku && VERSION.SDK_INT >= 28) DropdownMenuItem(
+                            if (VERSION.SDK_INT >= 28) DropdownMenuItem(
                                 { Text(stringResource(R.string.transfer_ownership)) },
                                 {
                                     expanded = false
@@ -163,20 +162,12 @@ fun WorkModesScreen(
         ) {
             if (!privilege.profile) {
                 WorkingModeItem(R.string.device_owner, privilege.device) {
-                    if (!privilege.device || (VERSION.SDK_INT >= 28 && privilege.dhizuku)) {
+                    if (!privilege.device) {
                         dialog = 1
                     }
                 }
             }
             if (privilege.profile) WorkingModeItem(R.string.profile_owner, true) { }
-            if (privilege.dhizuku || !privilege.activated) {
-                WorkingModeItem(R.string.dhizuku, privilege.dhizuku) {
-                    if (!privilege.dhizuku) {
-                        dialog = 2
-                        vm.activateDhizukuMode(::handleResult)
-                    }
-                }
-            }
             if (
                 privilege.work || (VERSION.SDK_INT < 24 || vm.isCreatingWorkProfileAllowed())
             ) {
@@ -189,23 +180,6 @@ fun WorkModesScreen(
                     if (!privilege.org) dialog = 6
                 }
             }
-            if (privilege.activated && !privilege.dhizuku) Row(
-                Modifier
-                    .padding(top = 20.dp)
-                    .fillMaxWidth()
-                    .clickable { onNavigate(Destination.DhizukuServerSettings) }
-                    .padding(vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painterResource(R.drawable.dhizuku_icon), null,
-                    Modifier
-                        .padding(8.dp)
-                        .size(28.dp)
-                )
-                Text(stringResource(R.string.dhizuku_server), style = typography.titleLarge)
-            }
-
             Column(Modifier.padding(HorizontalPadding, 20.dp)) {
                 Row(
                     Modifier.padding(bottom = 4.dp), verticalAlignment = Alignment.CenterVertically
@@ -226,28 +200,14 @@ fun WorkModesScreen(
             title = { Text(stringResource(R.string.activate_method)) },
             text = {
                 FlowRow(Modifier.fillMaxWidth()) {
-                    if (!privilege.dhizuku) {
-                        Button({ dialog = 5 }, Modifier.padding(end = 8.dp)) {
-                            Text(stringResource(R.string.adb_command))
-                        }
-                        Button({
-                            dialog = 2
-                            vm.activateDoByShizuku(::handleResult)
-                        }, Modifier.padding(end = 8.dp)) {
-                            Text(stringResource(R.string.shizuku))
-                        }
-                        Button({
-                            dialog = 2
-                            vm.activateDoByRoot(::handleResult)
-                        }, Modifier.padding(end = 8.dp)) {
-                            Text("Root")
-                        }
+                    Button({ dialog = 5 }, Modifier.padding(end = 8.dp)) {
+                        Text(stringResource(R.string.adb_command))
                     }
-                    if (VERSION.SDK_INT >= 28 && privilege.dhizuku) Button({
+                    Button({
                         dialog = 2
-                        vm.activateDoByDhizuku(::handleResult)
+                        vm.activateDoByRoot(::handleResult)
                     }, Modifier.padding(end = 8.dp)) {
-                        Text(stringResource(R.string.dhizuku))
+                        Text("Root")
                     }
                 }
             },
@@ -286,8 +246,8 @@ fun WorkModesScreen(
             title = { Text(stringResource(R.string.deactivate)) },
             text = { Text(stringResource(R.string.info_deactivate)) },
             confirmButton = {
-                var time by remember { mutableIntStateOf(if (privilege.dhizuku) 0 else 3) }
-                if (!privilege.dhizuku) LaunchedEffect(Unit) {
+                var time by remember { mutableIntStateOf(3) }
+                LaunchedEffect(Unit) {
                     for (i in (0..2).reversed()) {
                         delay(1000)
                         time = i
@@ -324,20 +284,12 @@ fun WorkModesScreen(
         )
         if (dialog == 6) AlertDialog(
             text = {
-                Column {
-                    Button({
-                        dialog = 2
-                        vm.activateOrgProfileByShizuku { dialog = 0 }
-                    }) {
-                        Text(stringResource(R.string.shizuku))
-                    }
-                    Button({ dialog = 7 }) {
-                        Text(stringResource(R.string.adb_command))
-                    }
+                SelectionContainer {
+                    Text(activateOrgProfileCommand)
                 }
             },
             confirmButton = {
-                TextButton({ dialog = 0 }) { Text(stringResource(R.string.cancel)) }
+                TextButton({ dialog = 0 }) { Text(stringResource(R.string.confirm)) }
             },
             onDismissRequest = { dialog = 0 }
         )

@@ -54,7 +54,6 @@ android {
     }
     buildFeatures {
         compose = true
-        aidl = true
     }
     androidResources {
         generateLocaleConfig = true
@@ -98,10 +97,6 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.material3)
     implementation(libs.material.icons.core)
-    implementation(libs.shizuku.provider)
-    implementation(libs.shizuku.api)
-    implementation(libs.dhizuku.api)
-    implementation(libs.dhizuku.server.api)
     implementation(libs.androidx.fragment)
     implementation(libs.hiddenApiBypass)
     implementation(libs.libsu)

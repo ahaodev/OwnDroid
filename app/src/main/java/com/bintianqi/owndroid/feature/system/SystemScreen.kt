@@ -91,7 +91,7 @@ fun SystemScreen(
         FunctionItem(R.string.keyguard, icon = R.drawable.screen_lock_portrait_fill0) {
             onNavigate(Destination.Keyguard)
         }
-        if (VERSION.SDK_INT >= 24 && privilege.device && !privilege.dhizuku)
+        if (VERSION.SDK_INT >= 24 && privilege.device)
             FunctionItem(R.string.hardware_monitor, icon = R.drawable.memory_fill0) {
                 onNavigate(Destination.HardwareMonitor)
             }
@@ -134,7 +134,7 @@ fun SystemScreen(
         FunctionItem(R.string.ca_cert, icon = R.drawable.license_fill0) {
             onNavigate(Destination.CaCert)
         }
-        if (VERSION.SDK_INT >= 26 && !privilege.dhizuku && (privilege.device || privilege.org)) {
+        if (VERSION.SDK_INT >= 26 && (privilege.device || privilege.org)) {
             FunctionItem(R.string.security_logging, icon = R.drawable.description_fill0) {
                 onNavigate(Destination.SecurityLogging)
             }
