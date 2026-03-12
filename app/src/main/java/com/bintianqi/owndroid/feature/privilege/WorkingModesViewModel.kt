@@ -8,6 +8,7 @@ import com.bintianqi.owndroid.PrivilegeHelper
 import com.bintianqi.owndroid.R
 import com.bintianqi.owndroid.feature.settings.SettingsRepository
 import com.bintianqi.owndroid.utils.ACTIVATE_DEVICE_OWNER_COMMAND
+import com.bintianqi.owndroid.utils.AdbLocalClient
 import com.bintianqi.owndroid.utils.MyAdminComponent
 import com.bintianqi.owndroid.utils.PrivilegeStatus
 import com.bintianqi.owndroid.utils.ToastChannel
@@ -33,11 +34,23 @@ class WorkingModesViewModel(
                 val result = Shell.cmd(ACTIVATE_DEVICE_OWNER_COMMAND).exec()
                 val output = result.out.joinToString("\n") + "\n" + result.err.joinToString("\n")
                 if (result.isSuccess) updateStatus()
-                callback(result.isSuccess, output)
+                callback(result.isSuccess, output.trim())
             } else {
                 callback(false, application.getString(R.string.permission_denied))
             }
         }
+    }
+
+    fun activateDoByAdb(callback: (Boolean, String?) -> Unit) {
+        Thread {
+            try {
+                val output = AdbLocalClient.exec(ACTIVATE_DEVICE_OWNER_COMMAND)
+                updateStatus()
+                callback(true, output)
+            } catch (e: Exception) {
+                callback(false, e.message)
+            }
+        }.start()
     }
 
     fun deactivate() {

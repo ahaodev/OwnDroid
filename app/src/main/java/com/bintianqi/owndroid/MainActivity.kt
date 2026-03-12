@@ -21,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -41,10 +40,16 @@ import com.bintianqi.owndroid.ui.navigation.myEntryProvider
 import com.bintianqi.owndroid.ui.navigation.rememberSharedViewModelStoreNavEntryDecorator
 import com.bintianqi.owndroid.ui.screen.AppLockDialog
 import com.bintianqi.owndroid.ui.theme.OwnDroidTheme
+import com.bintianqi.owndroid.utils.AdbLocalClient
+import com.bintianqi.owndroid.utils.ACTIVATE_DEVICE_OWNER_COMMAND
+import com.bintianqi.owndroid.utils.getPrivilegeStatus
 import com.bintianqi.owndroid.utils.popToast
 import com.bintianqi.owndroid.utils.registerPackageRemovedReceiver
 import com.bintianqi.owndroid.utils.viewModelFactory
+import com.topjohnwu.superuser.Shell
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @ExperimentalMaterial3Api
 class MainActivity : FragmentActivity() {
@@ -90,7 +95,6 @@ class MainActivity : FragmentActivity() {
             }
         }
         setContent {
-            val dhizukuError by remember { mutableStateOf<Any?>(null) }
             var appLockDialog by rememberSaveable { mutableStateOf(false) }
             val theme by myApp.container.themeState.collectAsState()
             OwnDroidTheme(theme) {
@@ -102,8 +106,23 @@ class MainActivity : FragmentActivity() {
                 val backstack = rememberNavBackStack(Destination.Home)
                 LaunchedEffect(Unit) {
                     if (!myApp.container.privilegeState.value.activated) {
-                        backstack.add(Destination.WorkingModes(false))
-                        backstack.removeFirstOrNull()
+                        val rootResult = withContext(Dispatchers.IO) {
+                            try { Shell.cmd(ACTIVATE_DEVICE_OWNER_COMMAND).exec() } catch (e: Exception) { null }
+                        }
+                        val activated = if (rootResult?.isSuccess == true) {
+                            true
+                        } else {
+                            withContext(Dispatchers.IO) {
+                                try { AdbLocalClient.exec(ACTIVATE_DEVICE_OWNER_COMMAND); true }
+                                catch (e: Exception) { false }
+                            }
+                        }
+                        if (activated) {
+                            myApp.container.privilegeState.value = getPrivilegeStatus(myApp.container.privilegeHelper)
+                        } else {
+                            backstack.add(Destination.WorkingModes(false))
+                            backstack.removeFirstOrNull()
+                        }
                     }
                 }
                 NavDisplay(
