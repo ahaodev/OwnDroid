@@ -351,11 +351,6 @@ fun AboutScreen(onNavigateUp: () -> Unit) {
             Modifier.padding(start = 16.dp)
         )
         Spacer(Modifier.padding(vertical = 5.dp))
-        FunctionItem(R.string.project_homepage, "GitHub", R.drawable.open_in_new) {
-            shareLink(
-                context, "https://github.com/BinTianqi/OwnDroid"
-            )
-        }
     }
 }
 

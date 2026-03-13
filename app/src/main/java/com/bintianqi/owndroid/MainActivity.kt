@@ -1,6 +1,7 @@
 package com.bintianqi.owndroid
 
 import android.Manifest
+import android.content.BroadcastReceiver
 import android.content.pm.PackageManager
 import android.os.Build.VERSION
 import android.os.Bundle
@@ -53,6 +54,8 @@ import kotlinx.coroutines.withContext
 
 @ExperimentalMaterial3Api
 class MainActivity : FragmentActivity() {
+    private var packageRemovedReceiver: BroadcastReceiver? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -73,7 +76,7 @@ class MainActivity : FragmentActivity() {
                 viewModelFactory { AppChooserViewModel(myApp) }
             }
         )
-        registerPackageRemovedReceiver(this) {
+        packageRemovedReceiver = registerPackageRemovedReceiver(this) {
             appChooserVm.onPackageRemoved(it)
         }
         if (
@@ -170,5 +173,11 @@ class MainActivity : FragmentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        packageRemovedReceiver?.let { unregisterReceiver(it) }
+        packageRemovedReceiver = null
     }
 }
